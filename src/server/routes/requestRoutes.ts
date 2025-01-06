@@ -23,31 +23,32 @@ router.put('/', async (req: Request, res: Response) => {
 // Get paginated requests
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const page = Math.max(1, parseInt(req.query.page as string, 10) || 1); // Default to page 1 if invalid or not provided
+    // Default page to 1 if not provided or invalid
+    const page = Math.max(1, parseInt(req.query.page as string, 10) || 1);
     const status = req.query.status as string | null;
 
-    // Fetch all requests sorted by requestCreatedDate
-    let requests = await RequestModel.find({})
-      .sort({ requestCreatedDate: -1 })
+    // Build query based on status
+    const query: { status?: string } = {};
+    if (status) {
+      query.status = status; // Add status filter if provided
+    }
+
+    // Get total count of matching documents
+    const totalRequests = await RequestModel.countDocuments(query);
+
+    // Fetch paginated results from the database
+    const requests = await RequestModel.find(query)
+      .sort({ requestCreatedDate: -1 }) // Sort by descending date
+      .skip((page - 1) * PAGINATION_PAGE_SIZE)
+      .limit(PAGINATION_PAGE_SIZE)
       .exec();
 
-    // Filter by status if provided
-    if (status) {
-      requests = requests.filter((req) => req.status === status);
-    }
-    
-    // Pagination
-    const totalRequests = requests.length;
-    const startIndex = (page - 1) * PAGINATION_PAGE_SIZE;
-    const endIndex = startIndex + PAGINATION_PAGE_SIZE;
-    const paginatedRequests = requests.slice(startIndex, endIndex);
-
-    // Return response with pagination metadata
+    // Return response with metadata and data
     res.status(200).json({
       currentPage: page,
       totalPages: Math.ceil(totalRequests / PAGINATION_PAGE_SIZE),
       totalRequests,
-      data: paginatedRequests,
+      data: requests,
     });
   } catch (error) {
     if (error instanceof Error) {

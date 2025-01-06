@@ -6,9 +6,9 @@
 - [X] Something cool!
 - [ ] Back-end
   - [ ] Minimum Requirements
-    - [ ] Setup MongoDB database
-    - [ ] Setup item requests collection
-    - [ ] `PUT /api/request`
+    - [X] Setup MongoDB database
+    - [X] Setup item requests collection
+    - [X] `PUT /api/request`
     - [ ] `GET /api/request?page=_`
   - [ ] Main Requirements
     - [ ] `GET /api/request?status=pending`

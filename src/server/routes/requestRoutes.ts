@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import RequestModel from '../models/Request.js'; // Adjust the import as needed
 import mongoose from 'mongoose';
+import { PAGINATION_PAGE_SIZE } from '@/lib/constants/config';
 
 const router = express.Router();
 
@@ -22,16 +23,32 @@ router.put('/', async (req: Request, res: Response) => {
 // Get paginated requests
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const { page = 1, status } = req.query;
-    const PAGE_SIZE = 10;
+    const page = Math.max(1, parseInt(req.query.page as string, 10) || 1); // Default to page 1 if invalid or not provided
+    const status = req.query.status as string | null;
 
-    const query = status ? { status } : {};
-    const requests = await RequestModel.find(query)
+    // Fetch all requests sorted by requestCreatedDate
+    let requests = await RequestModel.find({})
       .sort({ requestCreatedDate: -1 })
-      .skip((Number(page) - 1) * PAGE_SIZE)
-      .limit(PAGE_SIZE);
+      .exec();
 
-    res.json(requests);
+    // Filter by status if provided
+    if (status) {
+      requests = requests.filter((req) => req.status === status);
+    }
+    
+    // Pagination
+    const totalRequests = requests.length;
+    const startIndex = (page - 1) * PAGINATION_PAGE_SIZE;
+    const endIndex = startIndex + PAGINATION_PAGE_SIZE;
+    const paginatedRequests = requests.slice(startIndex, endIndex);
+
+    // Return response with pagination metadata
+    res.status(200).json({
+      currentPage: page,
+      totalPages: Math.ceil(totalRequests / PAGINATION_PAGE_SIZE),
+      totalRequests,
+      data: paginatedRequests,
+    });
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });

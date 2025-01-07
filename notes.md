@@ -4,15 +4,15 @@
 
 - [X] Read the README [please please please]
 - [X] Something cool!
-- [ ] Back-end
-  - [ ] Minimum Requirements
+- [X] Back-end
+  - [X] Minimum Requirements
     - [X] Setup MongoDB database
     - [X] Setup item requests collection
     - [X] `PUT /api/request`
-    - [ ] `GET /api/request?page=_`
-  - [ ] Main Requirements
-    - [ ] `GET /api/request?status=pending`
-    - [ ] `PATCH /api/request`
+    - [X] `GET /api/request?page=_`
+  - [X] Main Requirements
+    - [X] `GET /api/request?status=pending`
+    - [X] `PATCH /api/request`
   - [ ] Above and Beyond
     - [ ] Batch edits
     - [ ] Batch deletes
@@ -32,3 +32,23 @@
 # Notes
 
 <!-- Notes go here -->
+
+Batch edit edpoint: PATCH /api/request/batch
+
+Request body in format:
+{
+  "updates": [
+    { "id": "ID1", "status": "STATUS1" },
+    { "id": "ID2", "status": "STATUS2" }
+  ]
+}
+
+
+Batch delete endpoint: DELETE /api/request/delete
+
+{
+  "ids": [
+    "ID1",
+    "ID2"
+  ]
+}

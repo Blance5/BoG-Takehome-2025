@@ -60,33 +60,70 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // Update a request's status
-router.patch('/', async (req: Request, res: Response): Promise<void> => {
+router.patch('/batch', async (req: Request, res: Response) => {
   try {
-    const { id, status } = req.body;
-
-    // Validate the ID
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ error: 'Invalid ID format' });
+    const { updates } = req.body; // Expecting an array of updates
+    if (!Array.isArray(updates) || updates.length === 0) {
+      return res.status(400).json({ error: 'Invalid updates array' });
     }
 
-    // Validate the status
-    if (!['pending', 'completed', 'approved', 'rejected'].includes(status)) {
-      return res.status(400).json({ error: 'Invalid status' });
+    const results = [];
+    for (const update of updates) {
+      const { id, status } = update;
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        results.push({ id, error: 'Invalid ID format' });
+        continue;
+      }
+      if (!['pending', 'completed', 'approved', 'rejected'].includes(status)) {
+        results.push({ id, error: 'Invalid status' });
+        continue;
+      }
+
+      const updatedRequest = await RequestModel.findByIdAndUpdate(
+        id,
+        { status, lastEditedDate: new Date() },
+        { new: true }
+      );
+
+      if (!updatedRequest) {
+        results.push({ id, error: 'Request not found' });
+      } else {
+        results.push({ id, success: true, updatedRequest });
+      }
     }
 
-    const updatedRequest = await RequestModel.findByIdAndUpdate(
-      id,
-      { status, lastEditedDate: new Date() },
-      { new: true }
-    );
-
-    if (!updatedRequest) {
-      return res.status(404).json({ error: 'Request not found' });
-    }
-
-    res.json(updatedRequest);
+    res.status(200).json({ results });
   } catch (error) {
-    res.status(400).json({ error: error instanceof Error ? error.message : 'An unknown error occurred' });
+    res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error occurred' });
+  }
+});
+
+router.delete('/batch', async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.body; // Expecting an array of IDs
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ error: 'Invalid IDs array' });
+    }
+
+    const results = [];
+    for (const id of ids) {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        results.push({ id, error: 'Invalid ID format' });
+        continue;
+      }
+
+      const deletedRequest = await RequestModel.findByIdAndDelete(id);
+
+      if (!deletedRequest) {
+        results.push({ id, error: 'Request not found' });
+      } else {
+        results.push({ id, success: true });
+      }
+    }
+
+    res.status(200).json({ results });
+  } catch (error) {
+    res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error occurred' });
   }
 });
 

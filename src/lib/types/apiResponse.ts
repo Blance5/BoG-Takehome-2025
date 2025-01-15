@@ -10,12 +10,12 @@ export enum HTTP_STATUS_CODE {
 }
 
 export enum ResponseType {
-  UNKNOWN_ERROR = "UNKNOWN_ERROR",
-  INVALID_INPUT = "INVALID_INPUT",
-  UNAUTHORIZED = "UNAUTHORIZED",
-  FORBIDDEN = "FORBIDDEN",
-  CREATED = "CREATED",
-  SUCCESS = "SUCCESS",
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+  INVALID_INPUT = 'INVALID_INPUT',
+  UNAUTHORIZED = 'UNAUTHORIZED',
+  FORBIDDEN = 'FORBIDDEN',
+  CREATED = 'CREATED',
+  SUCCESS = 'SUCCESS',
 }
 
 export const RESPONSES: Record<
@@ -23,27 +23,27 @@ export const RESPONSES: Record<
   { message: string; code: number }
 > = {
   [ResponseType.UNKNOWN_ERROR]: {
-    message: "An unknown error occurred.",
+    message: 'An unknown error occurred.',
     code: HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR,
   },
   [ResponseType.INVALID_INPUT]: {
-    message: "Invalid input was received.",
+    message: 'Invalid input was received.',
     code: HTTP_STATUS_CODE.BAD_REQUEST,
   },
   [ResponseType.UNAUTHORIZED]: {
-    message: "Unauthorized access.",
+    message: 'Unauthorized access.',
     code: HTTP_STATUS_CODE.UNAUTHORIZED,
   },
   [ResponseType.FORBIDDEN]: {
-    message: "Forbidden access.",
+    message: 'Forbidden access.',
     code: HTTP_STATUS_CODE.FORBIDDEN,
   },
   [ResponseType.CREATED]: {
-    message: "Resource created successfully.",
+    message: 'Resource created successfully.',
     code: HTTP_STATUS_CODE.CREATED,
   },
   [ResponseType.SUCCESS]: {
-    message: "Request processed successfully.",
+    message: 'Request processed successfully.',
     code: HTTP_STATUS_CODE.OK,
   },
 };

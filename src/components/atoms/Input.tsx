@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-type InputVariant = "primary";
+type InputVariant = 'primary';
 
 interface InputProps {
   variant?: InputVariant;
-  type?: "text" | "password" | "email" | "number" | "tel" | "url" | "search";
+  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search';
   placeholder?: string;
   value?: string;
   label?: string;
@@ -14,8 +14,8 @@ interface InputProps {
 }
 
 export default function Input({
-  variant = "primary",
-  type = "text",
+  variant = 'primary',
+  type = 'text',
   placeholder,
   value,
   label,
@@ -23,10 +23,10 @@ export default function Input({
   onBlur,
   onFocus,
 }: InputProps) {
-  const baseStyles = "py-2 px-4 rounded-md transition w-full";
+  const baseStyles = 'py-2 px-4 rounded-md transition w-full';
 
   const variantStyles: Record<InputVariant, string> = {
-    primary: "bg-primary-fill outline-gray-stroke text-gray-text",
+    primary: 'bg-primary-fill outline-gray-stroke text-gray-text',
   };
 
   return (

@@ -1,4 +1,4 @@
-import { RequestStatus } from "../request";
+import { RequestStatus } from '../request';
 
 export interface MockItemRequest {
   id: number;

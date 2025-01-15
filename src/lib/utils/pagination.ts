@@ -1,9 +1,9 @@
-import { InvalidPaginationError } from "@/lib/errors/inputExceptions";
+import { InvalidPaginationError } from '@/lib/errors/inputExceptions';
 
 export default function paginate<T>(
   items: T[],
   currPage: number,
-  pageSize: number
+  pageSize: number,
 ): { data: T[]; totalPages: number; totalRecords: number } {
   if (currPage < 1 || pageSize < 1) {
     throw new InvalidPaginationError(currPage, pageSize);

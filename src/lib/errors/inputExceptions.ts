@@ -1,4 +1,4 @@
-import { HTTP_STATUS_CODE } from "../types/apiResponse";
+import { HTTP_STATUS_CODE } from '../types/apiResponse';
 
 export abstract class InputException extends Error {
   code: HTTP_STATUS_CODE;
@@ -12,7 +12,7 @@ export class InvalidInputError extends InputException {
   constructor(problem: string) {
     super(
       `Invalid input provided in ${problem}.`,
-      HTTP_STATUS_CODE.BAD_REQUEST
+      HTTP_STATUS_CODE.BAD_REQUEST,
     );
   }
 }
@@ -21,7 +21,7 @@ export class InvalidPaginationError extends InputException {
   constructor(currPage: number, pageSize: number) {
     super(
       `Invalid pagination configuration with page number: ${currPage} and size: ${pageSize}.`,
-      HTTP_STATUS_CODE.BAD_REQUEST
+      HTTP_STATUS_CODE.BAD_REQUEST,
     );
   }
 }

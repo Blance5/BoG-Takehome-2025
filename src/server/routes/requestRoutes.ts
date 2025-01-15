@@ -9,7 +9,10 @@ const router = express.Router();
 router.put('/', async (req: Request, res: Response) => {
   try {
     const { requestorName, itemRequested } = req.body;
-    const newRequest = await RequestModel.create({ requestorName, itemRequested });
+    const newRequest = await RequestModel.create({
+      requestorName,
+      itemRequested,
+    });
     res.status(201).json(newRequest);
   } catch (error) {
     if (error instanceof Error) {
@@ -30,10 +33,9 @@ router.get('/', async (req: Request, res: Response) => {
     // Build query based on status
     const query: { status?: string } = {};
     if (status) {
-      query.status = status; // Add status filter if provided
+      query.status = status;
     }
 
-    // Get total count of matching documents
     const totalRequests = await RequestModel.countDocuments(query);
 
     // Fetch paginated results from the database
@@ -59,7 +61,44 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-// Update a request's status
+// Update a single request's status
+router.patch('/', async (req: Request, res: Response) => {
+  try {
+    const { id, status } = req.body; // Expecting an object with `id` and `status`
+
+    // Validate the ID format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      console.error('Invalid ID format received:', id);
+      return res.status(400).json({ error: 'Invalid ID format' });
+    }
+
+    if (!['pending', 'completed', 'approved', 'rejected'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    const updatedRequest = await RequestModel.findByIdAndUpdate(
+      id,
+      { status, lastEditedDate: new Date() },
+      { new: true },
+    );
+
+    // request was not found
+    if (!updatedRequest) {
+      return res.status(404).json({ error: 'Request not found' });
+    }
+
+    res.status(200).json({ success: true, updatedRequest });
+  } catch (error) {
+    console.error('Error updating request:', error);
+    res
+      .status(500)
+      .json({
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
+      });
+  }
+});
+
 router.patch('/batch', async (req: Request, res: Response) => {
   try {
     const { updates } = req.body; // Expecting an array of updates
@@ -71,7 +110,7 @@ router.patch('/batch', async (req: Request, res: Response) => {
     for (const update of updates) {
       const { id, status } = update;
       if (!mongoose.Types.ObjectId.isValid(id)) {
-        console.error("Invalid ID format received:", id); // Log invalid ID
+        console.error('Invalid ID format received:', id);
         results.push({ id, error: 'Invalid ID format' });
         continue;
       }
@@ -83,10 +122,10 @@ router.patch('/batch', async (req: Request, res: Response) => {
       const updatedRequest = await RequestModel.findByIdAndUpdate(
         id,
         { status, lastEditedDate: new Date() },
-        { new: true }
+        { new: true },
       );
 
-      console.log("Update result for ID:", id, updatedRequest); // Log the database result
+      console.log('Update result for ID:', id, updatedRequest);
 
       if (!updatedRequest) {
         results.push({ id, error: 'Request not found' });
@@ -97,7 +136,12 @@ router.patch('/batch', async (req: Request, res: Response) => {
 
     res.status(200).json({ results });
   } catch (error) {
-    res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error occurred' });
+    res
+      .status(500)
+      .json({
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
+      });
   }
 });
 
@@ -126,7 +170,12 @@ router.delete('/batch', async (req: Request, res: Response) => {
 
     res.status(200).json({ results });
   } catch (error) {
-    res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error occurred' });
+    res
+      .status(500)
+      .json({
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
+      });
   }
 });
 

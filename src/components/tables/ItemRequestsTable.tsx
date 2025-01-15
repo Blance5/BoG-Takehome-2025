@@ -1,5 +1,5 @@
-import React from "react";
-import Dropdown from "@/components/atoms/Dropdown";
+import React from 'react';
+import Dropdown from '@/components/atoms/Dropdown';
 
 type ItemRequest = {
   id: string;
@@ -19,22 +19,17 @@ export default function ItemRequestsTable({
   data,
   onStatusChange,
 }: ItemRequestsTableProps) {
-  const statusOptions = ["Pending", "Approved", "Completed", "Rejected"];
-
-  const statusClasses: { [key in 'Pending' | 'Approved' | 'Completed' | 'Rejected']: string } = {
-    Pending: "bg-orange-100 text-orange-600",
-    Approved: "bg-yellow-100 text-yellow-600",
-    Completed: "bg-green-100 text-green-600",
-    Rejected: "bg-red-100 text-red-600",
-  };
+  const statusOptions = ['Pending', 'Approved', 'Completed', 'Rejected'];
 
   return (
-    <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200">
+    <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-md">
       <table className="min-w-full text-sm text-gray-700">
         <thead className="bg-gray-100 text-gray-600">
           <tr>
             <th className="px-4 py-2 text-left font-semibold">Name</th>
-            <th className="px-4 py-2 text-left font-semibold">Item Requested</th>
+            <th className="px-4 py-2 text-left font-semibold">
+              Item Requested
+            </th>
             <th className="px-4 py-2 text-left font-semibold">Created</th>
             <th className="px-4 py-2 text-left font-semibold">Updated</th>
             <th className="px-4 py-2 text-left font-semibold">Status</th>
@@ -45,7 +40,7 @@ export default function ItemRequestsTable({
             <tr
               key={index}
               className={`border-t ${
-                index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
               }`}
             >
               <td className="px-4 py-2">{item.name}</td>
@@ -55,26 +50,25 @@ export default function ItemRequestsTable({
               <td className="px-4 py-2">
                 {/* Styled Status Display */}
                 <div
-                  className={`flex items-center px-2 py-1 rounded-full font-medium ${
+                  className={`flex items-center rounded-full px-2 py-1 font-medium ${
                     {
-                      Pending: "bg-orange-100 text-orange-600",
-                      Approved: "bg-yellow-100 text-yellow-600",
-                      Completed: "bg-green-100 text-green-600",
-                      Rejected: "bg-red-100 text-red-600",
+                      Pending: 'bg-orange-100 text-orange-600',
+                      Approved: 'bg-yellow-100 text-yellow-600',
+                      Completed: 'bg-green-100 text-green-600',
+                      Rejected: 'bg-red-100 text-red-600',
                     }[item.status]
                   }`}
                 >
                   <span
-                    className={`w-2 h-2 rounded-full mr-2 ${
+                    className={`mr-2 h-2 w-2 rounded-full ${
                       {
-                        Pending: "bg-orange-600",
-                        Approved: "bg-yellow-600",
-                        Completed: "bg-green-600",
-                        Rejected: "bg-red-600",
+                        Pending: 'bg-orange-600',
+                        Approved: 'bg-yellow-600',
+                        Completed: 'bg-green-600',
+                        Rejected: 'bg-red-600',
                       }[item.status]
                     }`}
                   ></span>
-                  
                 </div>
 
                 {/* Dropdown for Status */}

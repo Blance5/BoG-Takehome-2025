@@ -1,4 +1,4 @@
-import { MockItemRequest } from "@/lib/types/mock/request";
+import { MockItemRequest } from '@/lib/types/mock/request';
 
 export function generateMockId(requests: MockItemRequest[]): number {
   return requests.length > 0
@@ -7,9 +7,9 @@ export function generateMockId(requests: MockItemRequest[]): number {
 }
 
 export function sortMockItemRequests(
-  requests: MockItemRequest[]
+  requests: MockItemRequest[],
 ): MockItemRequest[] {
   return requests.sort(
-    (a, b) => b.requestCreatedDate.getTime() - a.requestCreatedDate.getTime()
+    (a, b) => b.requestCreatedDate.getTime() - a.requestCreatedDate.getTime(),
   );
 }

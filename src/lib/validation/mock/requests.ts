@@ -3,11 +3,11 @@
 import {
   MockCreateItemRequest,
   MockEditStatusRequest,
-} from "@/lib/types/mock/request";
-import { RequestStatus } from "@/lib/types/request";
+} from '@/lib/types/mock/request';
+import { RequestStatus } from '@/lib/types/request';
 
 function isValidMockString(str: any, lower?: number, upper?: number): boolean {
-  if (typeof str !== "string" || str.trim() == "") {
+  if (typeof str !== 'string' || str.trim() == '') {
     return false;
   }
   if ((lower && str.length < lower) || (upper && str.length > upper)) {
@@ -32,11 +32,11 @@ export function isValidMockStatus(status: any): boolean {
 }
 
 export function isValidMockId(id: any): boolean {
-  return typeof id === "number" && id > 0;
+  return typeof id === 'number' && id > 0;
 }
 
 export function validateMockCreateItemRequest(
-  request: any
+  request: any,
 ): MockCreateItemRequest | null {
   if (!request.requestorName || !request.itemRequested) {
     return null;
@@ -55,7 +55,7 @@ export function validateMockCreateItemRequest(
 }
 
 export function validateMockEditStatusRequest(
-  request: any
+  request: any,
 ): MockEditStatusRequest | null {
   if (!request.id || !request.status) {
     return null;

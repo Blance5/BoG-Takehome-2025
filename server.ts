@@ -12,11 +12,13 @@ const app: Application = express();
 const PORT: number = parseInt(process.env.PORT || '5000', 10);
 
 // Middleware
-app.use(cors({
-  origin: 'http://localhost:3000', // Your Next.js frontend URL
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:3000', // Your Next.js frontend URL
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 // MongoDB Connection

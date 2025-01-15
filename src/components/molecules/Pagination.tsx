@@ -1,6 +1,6 @@
-import { PaginationProps } from "@/lib/types/props/pagination";
-import { RightArrowIcon } from "../icons/RightArrowIcon";
-import { LeftArrowIcon } from "../icons/LeftArrowIcon";
+import { PaginationProps } from '@/lib/types/props/pagination';
+import { RightArrowIcon } from '../icons/RightArrowIcon';
+import { LeftArrowIcon } from '../icons/LeftArrowIcon';
 
 const ArrowButton = ({
   children,
@@ -10,7 +10,7 @@ const ArrowButton = ({
   onClick?: () => void;
 }) => (
   <div
-    className="w-8 h-8 p-1 bg-gray-fill-light rounded border border-gray-stroke justify-center items-center inline-flex"
+    className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-stroke bg-gray-fill-light p-1"
     onClick={onClick}
   >
     {children}
@@ -26,7 +26,7 @@ export default function Pagination({
   const firstRecordOnPage = (pageNumber - 1) * pageSize + 1;
   const lastRecordOnPage = Math.min(
     firstRecordOnPage + pageSize - 1,
-    totalRecords
+    totalRecords,
   );
 
   const isValidPage =
@@ -37,7 +37,7 @@ export default function Pagination({
   }
 
   return (
-    <div className="justify-start items-center gap-4 inline-flex text-gray-text">
+    <div className="inline-flex items-center justify-start gap-4 text-gray-text">
       {firstRecordOnPage} - {lastRecordOnPage} of {totalRecords}
       <div className="inline-flex gap-2">
         {firstRecordOnPage > 1 && (

@@ -1,5 +1,5 @@
-import { NP } from "@/lib/constants/strings";
-import "./globals.css";
+import { NP } from '@/lib/constants/strings';
+import './globals.css';
 
 export const metadata = {
   title: NP.NAME,

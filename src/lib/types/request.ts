@@ -1,6 +1,6 @@
 export enum RequestStatus {
-  PENDING = "pending",
-  APPROVED = "approved",
-  COMPLETED = "completed",
-  REJECTED = "rejected",
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  COMPLETED = 'completed',
+  REJECTED = 'rejected',
 }

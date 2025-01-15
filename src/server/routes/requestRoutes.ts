@@ -71,6 +71,7 @@ router.patch('/batch', async (req: Request, res: Response) => {
     for (const update of updates) {
       const { id, status } = update;
       if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.error("Invalid ID format received:", id); // Log invalid ID
         results.push({ id, error: 'Invalid ID format' });
         continue;
       }
@@ -84,6 +85,8 @@ router.patch('/batch', async (req: Request, res: Response) => {
         { status, lastEditedDate: new Date() },
         { new: true }
       );
+
+      console.log("Update result for ID:", id, updatedRequest); // Log the database result
 
       if (!updatedRequest) {
         results.push({ id, error: 'Request not found' });

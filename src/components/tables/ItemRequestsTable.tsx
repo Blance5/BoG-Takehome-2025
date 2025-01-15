@@ -2,11 +2,12 @@ import React from "react";
 import Dropdown from "@/components/atoms/Dropdown";
 
 type ItemRequest = {
+  id: string;
   name: string;
   itemRequested: string;
   created: string;
   updated: string;
-  status: string;
+  status: 'Pending' | 'Approved' | 'Completed' | 'Rejected';
 };
 
 type ItemRequestsTableProps = {
@@ -20,7 +21,7 @@ export default function ItemRequestsTable({
 }: ItemRequestsTableProps) {
   const statusOptions = ["Pending", "Approved", "Completed", "Rejected"];
 
-  const statusClasses = {
+  const statusClasses: { [key in 'Pending' | 'Approved' | 'Completed' | 'Rejected']: string } = {
     Pending: "bg-orange-100 text-orange-600",
     Approved: "bg-yellow-100 text-yellow-600",
     Completed: "bg-green-100 text-green-600",
@@ -52,11 +53,19 @@ export default function ItemRequestsTable({
               <td className="px-4 py-2">{item.created}</td>
               <td className="px-4 py-2">{item.updated}</td>
               <td className="px-4 py-2">
+                {/* Styled Status Display */}
                 <div
-                  className={`inline-flex items-center px-2 py-1 rounded-full font-medium ${statusClasses[item.status]}`}
+                  className={`flex items-center px-2 py-1 rounded-full font-medium ${
+                    {
+                      Pending: "bg-orange-100 text-orange-600",
+                      Approved: "bg-yellow-100 text-yellow-600",
+                      Completed: "bg-green-100 text-green-600",
+                      Rejected: "bg-red-100 text-red-600",
+                    }[item.status]
+                  }`}
                 >
                   <span
-                    className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                    className={`w-2 h-2 rounded-full mr-2 ${
                       {
                         Pending: "bg-orange-600",
                         Approved: "bg-yellow-600",
@@ -65,14 +74,14 @@ export default function ItemRequestsTable({
                       }[item.status]
                     }`}
                   ></span>
-                  {item.status}
+                  
                 </div>
+
+                {/* Dropdown for Status */}
                 <Dropdown
                   value={item.status}
                   options={statusOptions}
-                  onChange={(newStatus) =>
-                    onStatusChange(item.name, newStatus)
-                  }
+                  onChange={(newStatus) => onStatusChange(item.id, newStatus)}
                 />
               </td>
             </tr>
